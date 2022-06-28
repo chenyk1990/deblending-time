@@ -1,7 +1,7 @@
-function [w,tw] = yc_ricker(f,dt,tlength)
-%YC_RICKER: Ricker wavelet of central frequency f0.
+function [w,tw] = dbt_ricker(f,dt,tlength)
+%DBT_RICKER: Ricker wavelet of central frequency f0.
 %
-%  [w,tw] = yc_ricker(f,dt);
+%  [w,tw] = dbt_ricker(f,dt);
 %
 %  IN   f : central freq. in Hz (f <<1/(2dt) )
 %       dt: sampling interval in sec
@@ -11,7 +11,7 @@ function [w,tw] = yc_ricker(f,dt,tlength)
 %
 %  Example
 %
-%    [w,tw] = yc_ricker(10,0.004);
+%    [w,tw] = dbt_ricker(10,0.004);
 %    plot(tw,w);
 %
 %  Modified by Yangkang Chen, 2015
