@@ -1,5 +1,5 @@
-%Joint deblending and shot scheduling inversion (already very close)
-%%works well when maximum/minimum time shifts are 4 samples.
+%% Reproducible script for Figure 2
+%
 close all; clc;clear;
 
 %% setting parameters

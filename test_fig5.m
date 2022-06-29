@@ -1,4 +1,4 @@
-%5 km x 5 km
+%% Reproducible script for Figure 5
 
 gx_real=linspace(2.5,5,30);
 gy_real=2.5*ones(size(gx_real));
