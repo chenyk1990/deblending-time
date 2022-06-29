@@ -16,21 +16,21 @@ L = 9;
 seed=2013;
 
 %% make synthetic data
-[d1,h,t] = hevents(dt,f0,tmax,h1,tau,v,amp,snr,L,seed);
-[d2,h,t] = hevents(dt,f0,tmax,h2,tau,v,amp,snr,L,seed);
+[d1,h,t] = dbt_hevents(dt,f0,tmax,h1,tau,v,amp,snr,L,seed);
+[d2,h,t] = dbt_hevents(dt,f0,tmax,h2,tau,v,amp,snr,L,seed);
 [nt,nx]=size(d1);
 
 figure;
 subplot(1,2,1);imagesc(h1,t,d1);
 subplot(1,2,2);imagesc(h2,t,d2);
 
-%% apply seisdithering
+%% apply dbt_dithering
 randn('state',202122);
 shift1=floor(0.1*randn(1,size(d1,2))/dt);   % shift of data1 to data2
 shift2=-shift1;                             % shift of data2 to data1
 
-d1shift=seisdither(d1,shift1);
-d2shift=seisdither(d2,shift2);
+d1shift=dbt_dither(d1,shift1);
+d2shift=dbt_dither(d2,shift2);
 
 figure;
 subplot(1,2,1);imagesc(h1,t,d1shift);
@@ -53,8 +53,8 @@ delta0=delta;
 delta0=delta0+round(32*(rand(1,n2)-0.5));
 del00=delta0;    %initial guess (fixed)
 del=delta;      %ground truth
-d1b=d1+seisdither(d2,del);
-d2b=d2+seisdither(d1,-del);
+d1b=d1+dbt_dither(d2,del);
+d2b=d2+dbt_dither(d1,-del);
 bd=d1b;
 labels={'a)','b)','c)','d)','e)'};
 figure('units','normalized','Position',[0.2 0.4 0.4, 1],'color','w');
@@ -70,24 +70,24 @@ for ifreq=1:length(freq)
     
     for iter=1:5 %%outer loop (non-linear iterations)
         del0=del1;
-        left=seisdither(d2,del0);
-        left=yc_deriv(left, 20, 1, 1);
+        left=dbt_dither(d2,del0);
+        left=dbt_deriv(left, 20, 1, 1);
         n1=size(left,1);
-        left=yc_bandpass(left,0.004,0,freq(ifreq),6,6,0,0);
+        left=dbt_bandpass(left,0.004,0,freq(ifreq),6,6,0,0);
         A=zeros(n1*n2,n2);
         for i2=1:n2
             A(1+(i2-1)*n1:i2*n1,i2)=left(:,i2);
         end
-        bd0=d1+seisdither(d2,del0);
+        bd0=d1+dbt_dither(d2,del0);
         right=bd0-bd;
-        right=yc_bandpass(right,0.004,0,freq(ifreq),6,6,0,0);
+        right=dbt_bandpass(right,0.004,0,freq(ifreq),6,6,0,0);
         dd=inv(A'*A)*(A'*right(:));
         del1=round(del0+1.0*dd);
     end
     %text=strcat('syn3-',num2str(niter),'-non-iterations');
     %title(text);
     %print(gcf,'-dpng','-r300',strcat(text,'.png'));
-    fprintf('ifreq=%d,freq=%g,SNR=%g->%g,MSE=%g->%g\n',ifreq,freq(ifreq),yc_snr(del(:),del00(:)),yc_snr(del(:),del1(:)),sum((del(:)-del00(:)).^2)/nx,sum((del(:)-del1(:)).^2)/nx);
+    fprintf('ifreq=%d,freq=%g,SNR=%g->%g,MSE=%g->%g\n',ifreq,freq(ifreq),dbt_snr(del(:),del00(:)),dbt_snr(del(:),del1(:)),sum((del(:)-del00(:)).^2)/nx,sum((del(:)-del1(:)).^2)/nx);
     plot([1:n2],del1,'r--','linewidth',2);
     xlim([0,70]);ylim([-50,50]);
     ylabel('Time shifts','Fontsize',14,'fontweight','bold');

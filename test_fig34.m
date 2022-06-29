@@ -1,10 +1,11 @@
-% script for fig3 (15 minutes?)
+%% Reproducible script for Figures 3 and 4 (15 minutes?)
 %
-% This script requires 1) the seistr package (https://github.com/chenyk1990/seistr); 2) the seislet package (currently it is not open-source yet, if you are interested in it, please contact Yangkang Chen, chenyk2016@gmail.com).
+%% This script requires
+% 1) the seistr package (https://github.com/chenyk1990/seistr);
+% 2) the seislet package (currently it is not open-source yet, if you are interested in it, please contact Yangkang Chen, chenyk2016@gmail.com).
 close all; clc;clear;
 addpath(genpath('./'));
-addpath(genpath('~/chenyk/matlibcyk'));
-addpath(genpath('~/chenyk/seislet/matfun/src/'));
+addpath(genpath('~/MATseislet'));
 addpath(genpath('~/seistr'));
 %% setting parameters
 dt = 4./1000;
@@ -80,12 +81,12 @@ for iter_out=1:5
         D2u = D2 + 0.5*(d2b-(D1T+D2));    % updated model
         D1= st_seislet_denoise_2d(D1u,dip,'ps',3,0.1,2,3);
         D2= st_seislet_denoise_2d(D2u,dip2,'ps',3,0.1,2,3);
-
+        
         snr2(iter)=10*log10(sum(sum(d1.*d1))/sum(sum((d1-D1).*(d1-D1))));
         snr22(iter)=10*log10(sum(sum(d2.*d2))/sum(sum((d2-D2).*(d2-D2))));
-%         figure(9);
-%         subplot(1,2,1);imagesc(h1,t,D1);
-%         subplot(1,2,2);imagesc(h2,t,D2);
+        %         figure(9);
+        %         subplot(1,2,1);imagesc(h1,t,D1);
+        %         subplot(1,2,2);imagesc(h2,t,D2);
         fprintf('iter2=%d,iter1=%d,SNR=%g,SNR2=%g\n',iter_out,iter,snr2(iter),snr22(iter));
     end
     snrs=[snrs,snr2];
@@ -98,9 +99,9 @@ for iter_out=1:5
     for iter=1:5 %%outer loop (non-linear iterations)
         del0=del1;
         left=dbt_dither(D2,del0);
-%           left=dbt_dither(d2,del0);
+        %           left=dbt_dither(d2,del0);
         left=dbt_deriv(left, 20, 1, 1);
-%         left=left(1:10:end,:);
+        %         left=left(1:10:end,:);
         n1=size(left,1);
         left=dbt_bandpass(left,0.004,0,6,6,6,0,0);
         A=zeros(n1*n2,n2);
@@ -108,9 +109,9 @@ for iter_out=1:5
             A(1+(i2-1)*n1:i2*n1,i2)=left(:,i2);
         end
         bd0=D1+dbt_dither(D2,del0);
-%           bd0=d1+dbt_dither(d2,del0);
+        %           bd0=d1+dbt_dither(d2,del0);
         right=bd0-bd;
-%         right=bd0(1:10:end,:)-bd(1:10:end,:);
+        %         right=bd0(1:10:end,:)-bd(1:10:end,:);
         right=dbt_bandpass(right,0.004,0,6,6,6,0,0);
         dd=inv(A'*A)*(A'*right(:));
         del1=round(del0+1*dd);
@@ -119,7 +120,7 @@ for iter_out=1:5
     end
     dels(iter_out,:)=del1(:)';
     delta0=del1;
-fprintf('iter2=%d,SNR=%g->%g,MSE=%g->%g\n',iter_out,dbt_snr(del(:),del00(:)),dbt_snr(del(:),del1(:)),sum((del(:)-del00(:)).^2)/nx,sum((del(:)-del1(:)).^2)/nx);
+    fprintf('iter2=%d,SNR=%g->%g,MSE=%g->%g\n',iter_out,dbt_snr(del(:),del00(:)),dbt_snr(del(:),del1(:)),sum((del(:)-del00(:)).^2)/nx,sum((del(:)-del1(:)).^2)/nx);
 end
 % figure;plot(snrs);hold on;plot(snrs2);
 % figure;plot(mses);
@@ -127,55 +128,56 @@ end
 %% maximum db iter2=5,iter1=10,SNR=11.1169,SNR2=10.6301
 
 figure;plot(1:n2,del,'k-','linewidth',2);hold on;plot(1:n2,del00,'b-','linewidth',2);
-plot(1:n2,del1,'r--','linewidth',2); 
+plot(1:n2,del1,'r--','linewidth',2);
 legend('True','Initial','Recovered','Location','Best');
 
 %% traditional
-    D1=zeros(nt,nx);
-    D2=zeros(nt,nx);
-    for iter=1:8
-        fprintf('\n Iter %d \n',iter);
-        D1T=dbt_dither(D1,-del00);
-        D2T=dbt_dither(D2,del00);
-        D1u = D1 + 0.5*(d1b-(D1+D2T));    % updated model
-        D2u = D2 + 0.5*(d2b-(D1T+D2));    % updated model
-        D1= seislet_denoise_2d(D1u,dip,'ps',3,0.1,2,3);
-        D2= seislet_denoise_2d(D2u,dip2,'ps',3,0.1,2,3);
-        
-        snr2(iter)=10*log10(sum(sum(d1.*d1))/sum(sum((d1-D1).*(d1-D1))));
-        snr22(iter)=10*log10(sum(sum(d2.*d2))/sum(sum((d2-D2).*(d2-D2))));
-        figure(9);
-        subplot(1,2,1);imagesc(h1,t,D1);
-        subplot(1,2,2);imagesc(h2,t,D2);
-        fprintf('iter2=%d,iter1=%d,SNR=%g,SNR2=%g\n',iter_out,iter,snr2(iter),snr22(iter));
-    end
+D1=zeros(nt,nx);
+D2=zeros(nt,nx);
+for iter=1:8
+    fprintf('\n Iter %d \n',iter);
+    D1T=dbt_dither(D1,-del00);
+    D2T=dbt_dither(D2,del00);
+    D1u = D1 + 0.5*(d1b-(D1+D2T));    % updated model
+    D2u = D2 + 0.5*(d2b-(D1T+D2));    % updated model
+    D1= st_seislet_denoise_2d(D1u,dip,'ps',3,0.1,2,3);
+    D2= st_seislet_denoise_2d(D2u,dip2,'ps',3,0.1,2,3);
+    
+    snr2(iter)=10*log10(sum(sum(d1.*d1))/sum(sum((d1-D1).*(d1-D1))));
+    snr22(iter)=10*log10(sum(sum(d2.*d2))/sum(sum((d2-D2).*(d2-D2))));
+    figure(9);
+    subplot(1,2,1);imagesc(h1,t,D1);
+    subplot(1,2,2);imagesc(h2,t,D2);
+    fprintf('iter2=%d,iter1=%d,SNR=%g,SNR2=%g\n',iter_out,iter,snr2(iter),snr22(iter));
+end
 figure;plot(snr2);
 
 
+%% Figure 3
 ngap=5;ngap2=2;
 indt=150:250;indx=40:51;
 n1z=length(indt);
 n2z=length(indx);
 [nt,nx]=size(d1);
-comp1=[data1s(:,:,1),zeros(n1,ngap),data2s(:,:,1),zeros(n1,ngap),d1b-data1s(:,:,1),zeros(n1,ngap),d2b-data2s(:,:,1),zeros(n1,ngap),d1-data1s(:,:,1),zeros(n1,ngap),d2-data2s(:,:,1)]; 
-comp1z=[data1s(indt,indx,1),zeros(n1z,ngap2),data2s(indt,indx,1),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,1),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,1)]; 
+comp1=[data1s(:,:,1),zeros(n1,ngap),data2s(:,:,1),zeros(n1,ngap),d1b-data1s(:,:,1),zeros(n1,ngap),d2b-data2s(:,:,1),zeros(n1,ngap),d1-data1s(:,:,1),zeros(n1,ngap),d2-data2s(:,:,1)];
+comp1z=[data1s(indt,indx,1),zeros(n1z,ngap2),data2s(indt,indx,1),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,1),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,1)];
 
-comp2=[data1s(:,:,2),zeros(n1,ngap),data2s(:,:,2),zeros(n1,ngap),d1b-data1s(:,:,2),zeros(n1,ngap),d2b-data2s(:,:,2),zeros(n1,ngap),d1-data1s(:,:,2),zeros(n1,ngap),d2-data2s(:,:,2)]; 
-comp2z=[data1s(indt,indx,2),zeros(n1z,ngap2),data2s(indt,indx,2),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,2),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,2)]; 
+comp2=[data1s(:,:,2),zeros(n1,ngap),data2s(:,:,2),zeros(n1,ngap),d1b-data1s(:,:,2),zeros(n1,ngap),d2b-data2s(:,:,2),zeros(n1,ngap),d1-data1s(:,:,2),zeros(n1,ngap),d2-data2s(:,:,2)];
+comp2z=[data1s(indt,indx,2),zeros(n1z,ngap2),data2s(indt,indx,2),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,2),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,2)];
 
-comp3=[data1s(:,:,3),zeros(n1,ngap),data2s(:,:,3),zeros(n1,ngap),d1b-data1s(:,:,3),zeros(n1,ngap),d2b-data2s(:,:,3),zeros(n1,ngap),d1-data1s(:,:,3),zeros(n1,ngap),d2-data2s(:,:,3)]; 
-comp3z=[data1s(indt,indx,3),zeros(n1z,ngap2),data2s(indt,indx,3),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,3),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,3)]; 
+comp3=[data1s(:,:,3),zeros(n1,ngap),data2s(:,:,3),zeros(n1,ngap),d1b-data1s(:,:,3),zeros(n1,ngap),d2b-data2s(:,:,3),zeros(n1,ngap),d1-data1s(:,:,3),zeros(n1,ngap),d2-data2s(:,:,3)];
+comp3z=[data1s(indt,indx,3),zeros(n1z,ngap2),data2s(indt,indx,3),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,3),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,3)];
 
-% comp4=[data1s(:,:,4),zeros(n1,ngap),data2s(:,:,4),zeros(n1,ngap),d1b-data1s(:,:,4),zeros(n1,ngap),d2b-data2s(:,:,4),zeros(n1,ngap),d1-data1s(:,:,4),zeros(n1,ngap),d2-data2s(:,:,4)]; 
-% comp4z=[data1s(indt,indx,4),zeros(n1z,ngap2),data2s(indt,indx,4),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,4),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,4)]; 
-comp4=[data1s(:,:,5),zeros(n1,ngap),data2s(:,:,5),zeros(n1,ngap),d1b-data1s(:,:,5),zeros(n1,ngap),d2b-data2s(:,:,5),zeros(n1,ngap),d1-data1s(:,:,5),zeros(n1,ngap),d2-data2s(:,:,5)]; 
-comp4z=[data1s(indt,indx,5),zeros(n1z,ngap2),data2s(indt,indx,5),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,5),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,5)]; 
+% comp4=[data1s(:,:,4),zeros(n1,ngap),data2s(:,:,4),zeros(n1,ngap),d1b-data1s(:,:,4),zeros(n1,ngap),d2b-data2s(:,:,4),zeros(n1,ngap),d1-data1s(:,:,4),zeros(n1,ngap),d2-data2s(:,:,4)];
+% comp4z=[data1s(indt,indx,4),zeros(n1z,ngap2),data2s(indt,indx,4),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,4),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,4)];
+comp4=[data1s(:,:,5),zeros(n1,ngap),data2s(:,:,5),zeros(n1,ngap),d1b-data1s(:,:,5),zeros(n1,ngap),d2b-data2s(:,:,5),zeros(n1,ngap),d1-data1s(:,:,5),zeros(n1,ngap),d2-data2s(:,:,5)];
+comp4z=[data1s(indt,indx,5),zeros(n1z,ngap2),data2s(indt,indx,5),zeros(n1z,ngap2),d1(indt,indx)-data1s(indt,indx,5),zeros(n1z,ngap2),d2(indt,indx)-data2s(indt,indx,5)];
 
 
 tz=t(indt);
 xz=1:size(comp1z,2);
 
-% comp2=[d2,zeros(n1,ngap),d2b,zeros(n1,ngap),D22,zeros(n1,ngap),d2b-D22,zeros(n1,ngap),D44,zeros(n1,ngap),d2b-D44]; 
+% comp2=[d2,zeros(n1,ngap),d2b,zeros(n1,ngap),D22,zeros(n1,ngap),d2b-D22,zeros(n1,ngap),D44,zeros(n1,ngap),d2b-D44];
 t=[0:500-1]*0.004;
 x=1:size(comp1,2);
 xts1=[10,30];
@@ -379,4 +381,36 @@ annotation(gcf,'arrow',[0.752777777777778 0.733333333333334],...
     [0.864691489361702 0.841755319148936],'color','r','linewidth',2);
 
 print(gcf,'-depsc','-r300','fig3.eps');
+
+%% Figure 4
+figure('units','normalized','Position',[0.2 0.4 0.6, 0.6],'color','w');
+subplot(2,1,1);
+plot(1:n2,del,'k-','linewidth',2);hold on;plot(1:n2,del00,'b-','linewidth',2);
+plot(1:n2,del1,'r--','linewidth',2);
+xlim([0,52]);
+xlabel('Shot NO #','Fontsize',12,'fontweight','bold');
+ylabel('Time shifts','Fontsize',12,'fontweight','bold');
+set(gca,'Linewidth',2,'Fontsize',12,'Fontweight','bold');
+legend('True','Initial','Recovered','Location','Best');
+text(-3,65,'a)','color','k','Fontsize',18,'fontweight','bold','HorizontalAlignment','left');
+
+subplot(2,2,3);
+plot([1:8*5],snrs,'r','linewidth',2);hold on;plot([1:8*5],snrs2,'b','linewidth',2);
+plot([1:8],snr2,'g--','linewidth',2);
+plot([1:8],snr22,'c--','linewidth',2);
+xlabel('Iteration NO #','Fontsize',12,'fontweight','bold');
+ylabel('S/N (dB)','Fontsize',12,'fontweight','bold');
+set(gca,'Linewidth',2,'Fontsize',12,'Fontweight','bold');
+legend('Joint (source 1)','Joint (source 2)','Traditional (source 1)','Traditional (source 2)','Location','Best');
+text(-3*40/23,14+(65-60)*10/120,'b)','color','k','Fontsize',18,'fontweight','bold','HorizontalAlignment','left');
+
+subplot(2,2,4);
+plot([1:5*5],mses,'r','linewidth',3);
+xlabel('Iteration NO #','Fontsize',12,'fontweight','bold');
+ylabel('MSE','Fontsize',12,'fontweight','bold');
+set(gca,'Linewidth',2,'Fontsize',12,'Fontweight','bold');
+text(-3*25/23,8+(65-60)*8/120,'c)','color','k','Fontsize',18,'fontweight','bold','HorizontalAlignment','left');
+print(gcf,'-depsc','-r300','fig4.eps');
+
+
 
