@@ -1,5 +1,5 @@
-function [dout]=db_transp(din,plane)
-% db_transp: Transpose two axes in a dataset
+function [dout]=dbt_transp(din,plane)
+% dbt_transp: Transpose two axes in a dataset
 % by Yangkang Chen, Dec 18, 2019
 % Modified on Jan, 2020
 % 

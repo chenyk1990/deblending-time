@@ -1,5 +1,5 @@
-function [ D1 ] = yc_meanf(D,nfw,ifb,axis)
-%YC_MEANF: mean filter along first or second axis for 2D profile
+function [ D1 ] = dbt_meanf(D,nfw,ifb,axis)
+%DBT_MEANF: mean filter along first or second axis for 2D profile
 %  IN   D:   	intput data 
 %       nfw:    window size
 %       ifb:    if use padded boundary (if not, zero will be padded)

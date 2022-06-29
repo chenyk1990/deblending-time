@@ -1,5 +1,5 @@
-function [ dataout ] = db_dither( datain, shift )
-% db_dither: apply dithering
+function [ dataout ] = dbt_dither( datain, shift )
+% dbt_dither: apply dithering
 %
 % by Yangkang Chen
 % Jan, 2013

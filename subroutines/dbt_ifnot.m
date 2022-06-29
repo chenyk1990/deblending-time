@@ -1,5 +1,5 @@
-function v = yc_ifnot(yes, v1, v2)
-% yc_ifnot: equivalent to C grammar (v=yes?v1:v2)
+function v = dbt_ifnot(yes, v1, v2)
+% dbt_ifnot: equivalent to C grammar (v=yes?v1:v2)
 % Yangkang Chen
 % July, 22, 2020
 
