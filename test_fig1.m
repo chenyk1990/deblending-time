@@ -32,9 +32,9 @@ d2shift=dbt_dither(d2,shift2);
 %% blend
 d1b=d1+d2shift;
 d2b=d2+d1shift;
-figure;
-subplot(1,2,1);imagesc(h1,t,d1b);
-subplot(1,2,2);imagesc(h2,t,d2b);
+% figure;
+% subplot(1,2,1);imagesc(h1,t,d1b);
+% subplot(1,2,2);imagesc(h2,t,d2b);
 
 [nt,nx]=size(d1);
 t=[0:nt-1]*0.004;
