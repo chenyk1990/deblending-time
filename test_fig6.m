@@ -277,7 +277,7 @@ text((nx+ngap)*7+nx/2,4.35,'Shot NO #','color','k','Fontsize',10,'fontweight','b
 subplot(5,1,3:4);dbt_imagesc(comp2(1:1000,:),98,1,x,t(1:1000));
 text(-50,-0.2,'b)','color','k','Fontsize',16,'fontweight','bold','HorizontalAlignment','left');
 xticks(xts);
-set(gca,'xticklabel',{'30','60','90','120'});
+set(gca,'xticklabel',{'30','60','90'});
 ylabel('Time (s)','Fontsize',10,'fontweight','bold');
 set(gca,'Linewidth',2,'Fontsize',10,'Fontweight','bold');
 text(nx/2,0.16,'Unblended','color','b','Fontsize',10,'fontweight','bold','HorizontalAlignment','center');
