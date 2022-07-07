@@ -194,7 +194,7 @@ xts5z=xts1z+ngap2*2+n2z*2;
 xts6z=xts1z+ngap2*3+n2z*3;
 xtsz=[xts1z,xts2z,xts5z,xts6z];
 figure('units','normalized','Position',[0.0 0.0 0.5, 1],'color','w');
-subplot(4,5,1:3);yc_imagesc(comp1(:,:),3,2,x,t);ylim([0,2.0]);
+subplot(4,5,1:3);dbt_imagesc(comp1(:,:),3,2,x,t);ylim([0,2.0]);
 text(-30,-0.2,'a)','color','k','Fontsize',16,'fontweight','bold','HorizontalAlignment','left');
 xticks(xts);
 set(gca,'xticklabel',{'10','30'});
@@ -230,7 +230,7 @@ plot([indx(1)+n2*5+ngap*5,indx(end)+n2*5+ngap*5],t([indt(1),indt(1)]),'r','linew
 plot([indx(1)+n2*5+ngap*5,indx(end)+n2*5+ngap*5],t([indt(end),indt(end)]),'r','linewidth',2);
 
 
-subplot(4,5,4:5);yc_imagesc(comp1z(:,:),6,2,xz,tz);
+subplot(4,5,4:5);dbt_imagesc(comp1z(:,:),6,2,xz,tz);
 xticks(xtsz);
 set(gca,'xticklabel',{num2str(indx(1)+round(n2z/2))});
 ylabel('','Fontsize',10,'fontweight','bold');
@@ -243,7 +243,7 @@ text((n2z+ngap2)*2+n2z/2,tz(1)+0.16*(tz(end)-tz(1))/(t(end)-t(1)),'Error 1','col
 text((n2z+ngap2)*3+n2z/2,tz(1)+0.16*(tz(end)-tz(1))/(t(end)-t(1)),'Error 2','color','b','Fontsize',10,'fontweight','bold','HorizontalAlignment','center');
 
 
-subplot(4,5,[1:3]+5);yc_imagesc(comp2(:,:),3,2,x,t);ylim([0,2.0]);
+subplot(4,5,[1:3]+5);dbt_imagesc(comp2(:,:),3,2,x,t);ylim([0,2.0]);
 text(-30,-0.2,'b)','color','k','Fontsize',16,'fontweight','bold','HorizontalAlignment','left');
 xticks(xts);
 set(gca,'xticklabel',{'10','30'});
@@ -272,14 +272,14 @@ plot([indx(1)+n2*5+ngap*5,indx(end)+n2*5+ngap*5],t([indt(1),indt(1)]),'r','linew
 plot([indx(1)+n2*5+ngap*5,indx(end)+n2*5+ngap*5],t([indt(end),indt(end)]),'r','linewidth',2);
 
 
-subplot(4,5,[4:5]+5);yc_imagesc(comp2z(:,:),6,2,xz,tz);
+subplot(4,5,[4:5]+5);dbt_imagesc(comp2z(:,:),6,2,xz,tz);
 xticks(xtsz);
 set(gca,'xticklabel',{num2str(indx(1)+round(n2z/2))});
 ylabel('','Fontsize',10,'fontweight','bold');
 title('Zoomed (joint iter #2)','Fontsize',10,'fontweight','bold');
 set(gca,'Linewidth',2,'Fontsize',10,'Fontweight','bold');
 
-subplot(4,5,[1:3]+5*2);yc_imagesc(comp3(:,:),3,2,x,t);ylim([0,2.0]);
+subplot(4,5,[1:3]+5*2);dbt_imagesc(comp3(:,:),3,2,x,t);ylim([0,2.0]);
 text(-30,-0.2,'c)','color','k','Fontsize',16,'fontweight','bold','HorizontalAlignment','left');
 xticks(xts);
 set(gca,'xticklabel',{'10','30'});
@@ -307,7 +307,7 @@ plot([indx(end)+n2*5+ngap*5,indx(end)+n2*5+ngap*5],t([indt(1),indt(end)]),'r','l
 plot([indx(1)+n2*5+ngap*5,indx(end)+n2*5+ngap*5],t([indt(1),indt(1)]),'r','linewidth',2);
 plot([indx(1)+n2*5+ngap*5,indx(end)+n2*5+ngap*5],t([indt(end),indt(end)]),'r','linewidth',2);
 
-subplot(4,5,[4:5]+5*2);yc_imagesc(comp3z(:,:),6,2,xz,tz);
+subplot(4,5,[4:5]+5*2);dbt_imagesc(comp3z(:,:),6,2,xz,tz);
 xticks(xtsz);
 set(gca,'xticklabel',{num2str(indx(1)+round(n2z/2))});
 ylabel('','Fontsize',10,'fontweight','bold');
@@ -315,7 +315,7 @@ set(gca,'Linewidth',2,'Fontsize',10,'Fontweight','bold');
 title('Zoomed (joint iter #3)','Fontsize',10,'fontweight','bold');
 
 
-subplot(4,5,[1:3]+5*3);yc_imagesc(comp4(:,:),3,2,x,t);ylim([0,2.0]);
+subplot(4,5,[1:3]+5*3);dbt_imagesc(comp4(:,:),3,2,x,t);ylim([0,2.0]);
 text(-30,-0.2,'d)','color','k','Fontsize',16,'fontweight','bold','HorizontalAlignment','left');
 xticks(xts);
 set(gca,'xticklabel',{'10','30'});
@@ -349,7 +349,7 @@ text((n2+ngap)*3+n2/2,2.35,'Shot #','color','k','Fontsize',10,'fontweight','bold
 text((n2+ngap)*4+n2/2,2.35,'Shot #','color','k','Fontsize',10,'fontweight','bold','HorizontalAlignment','center');
 text((n2+ngap)*5+n2/2,2.35,'Shot #','color','k','Fontsize',10,'fontweight','bold','HorizontalAlignment','center');
 
-subplot(4,5,[4:5]+5*3);yc_imagesc(comp4z(:,:),6,2,xz,tz);
+subplot(4,5,[4:5]+5*3);dbt_imagesc(comp4z(:,:),6,2,xz,tz);
 xticks(xtsz);
 set(gca,'xticklabel',{num2str(indx(1)+round(n2z/2))});
 ylabel('','Fontsize',10,'fontweight','bold');

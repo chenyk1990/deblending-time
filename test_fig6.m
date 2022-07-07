@@ -6,7 +6,7 @@ clc;clear;close all;
 % requiring the DRR package
 % https://github.com/chenyk1990/MATdrr
 addpath(genpath('~/MATdrr'));
-addpath(genpath('../subroutines'));
+addpath(genpath('subroutines'));
 
 %% please download data from https://drive.google.com/file/d/1ge0Mn_SB4LUsVgOBvATh0iISwGQahKh4/view?usp=sharing
 load yc_fieldsr.mat
