@@ -46,7 +46,7 @@ Using the latest version
 
 -----------
 ## Gallery
-    The gallery figures of the MATdrr package can be found at https://github.com/chenyk1990/gallery/tree/main/deblending-time Each figure in the gallery directory corresponds to a DEMO script in the "main" directory with the the same file name (e.g., fig1.pdf -> test_fig1.m).
+The gallery figures of the MATdrr package can be found at https://github.com/chenyk1990/gallery/tree/main/deblending-time Each figure in the gallery directory corresponds to a DEMO script in the "main" directory with the the same file name (e.g., fig1.pdf -> test_fig1.m).
 
 -----------
 ## Dependence Packages
