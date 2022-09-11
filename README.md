@@ -6,7 +6,7 @@
 **deblending-time** is a open-access Matlab package for joint deblending and source time inversion. 
 
 ## Reference
-    Chen, Y., S. Fomel, and R. Abma. Joint deblending and source time inversion, 88(1), WA27–WA35.
+    Chen, Y., S. Fomel, and R. Abma, 2022, Joint deblending and source time inversion, 88(1), WA27–WA35.
     
 BibTeX:
 
